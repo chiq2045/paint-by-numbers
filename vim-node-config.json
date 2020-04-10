@@ -1,0 +1,4 @@
+{
+	"request": "launch",
+	"program": "./imgToSVG.js"
+}
