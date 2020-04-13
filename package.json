@@ -2,7 +2,7 @@
   "name": "paintbynumbers",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "paint.js",
   "scripts": {
     "start": "echo 'Building UI Files' && webpack && echo '\n\nStarting Server' node index.js",
     "build": "webpack",
@@ -58,6 +58,7 @@
     "koa-static": "^5.0.0",
     "potrace": "^2.1.5",
     "prompt-sync": "^4.2.0",
+    "prop-types": "^15.7.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-router-dom": "^5.1.2",
