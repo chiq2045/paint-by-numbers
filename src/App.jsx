@@ -7,7 +7,8 @@ import {
 import Login from './views/Login';
 import NavBar from './components/NavBar';
 import UserDashBoard from './views/user/Dashboard';
-import AdminDashboard from './views/admin/Dashboard';
+// import AdminDashboard from './views/admin/Dashboard';
+import AdminRoutes from './components/AdminRoutes';
 import Logout from './views/Logout';
 
 export default function App() {
@@ -26,7 +27,7 @@ export default function App() {
           </Route>
           <Route path='/admin'>
             <NavBar isAdmin={true} />
-            <AdminDashboard />
+            <AdminRoutes />
           </Route>
           <Route path='/logout' component={Logout} />
         </Switch>
