@@ -3,11 +3,11 @@ import {
   Switch,
   Route
 } from 'react-router-dom';
-import Login from '../views/Login';
-import NavBar from './NavBar';
-import Logout from '../views/Logout';
-import AdminRoutes from './AdminRoutes';
-import UserRoutes from './UserRoutes';
+// import Login from '../views/Login';
+// import Logout from '../views/Logout';
+// import AdminRoutes from './AdminRoutes';
+import Dashboard from '../views/Dashboard';
+import UploadImage from '../views/UploadImage';
 
 export default function App() {
   return (
@@ -16,17 +16,12 @@ export default function App() {
         <Route
           exact
           path='/'
-          component={Login}
+          component={Dashboard}
         />
-        <Route path='/user'>
-          <NavBar isAdmin={false} />
-          <UserRoutes />
-        </Route>
-        <Route path='/admin'>
-          <NavBar isAdmin={true} />
-          <AdminRoutes />
-        </Route>
-        <Route path='/logout' component={Logout} />
+        <Route
+          path='/admin/upload'
+          component={UploadImage}
+        />
       </Switch>
     </div>
   );
