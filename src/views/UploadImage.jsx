@@ -18,7 +18,11 @@ export default function UploadImage() {
       files[0],
       files[0].name
     );
-    axios.post('https://api.ogamba.com/paint/image', data);
+    axios
+      .post('https://api.ogamba.com/paint/upload/single', data)
+      .then(response => {
+        console.log(response);
+      });
   };
 
   const fileData = () => {
