@@ -3,11 +3,10 @@ import {
   Switch,
   Route
 } from 'react-router-dom';
-// import Login from '../views/Login';
-// import Logout from '../views/Logout';
-// import AdminRoutes from './AdminRoutes';
+import Login from './Login';
 import Dashboard from '../views/Dashboard';
-import UploadImage from '../views/UploadImage';
+import ImageRoutes from './ImageRoutes';
+import PrivateRoute from './PrivateRoute';
 
 export default function App() {
   return (
@@ -18,10 +17,8 @@ export default function App() {
           path='/'
           component={Dashboard}
         />
-        <Route
-          path='/admin/upload'
-          component={UploadImage}
-        />
+        <PrivateRoute path='/admin/images' component={ImageRoutes} />
+        <Route path='/login' component={Login} />
       </Switch>
     </div>
   );

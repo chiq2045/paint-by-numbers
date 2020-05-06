@@ -1,11 +1,14 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
-import {
-  Link
-  // useRouteMatch
-} from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import { useAuth0 } from '../utils/react-auth0-spa';
 
 export default function Navbar() {
+  const {
+    isAuthenticated,
+    logout
+  } = useAuth0();
+
   return (
     <div className='header header-fill unselectable header-animated header-dark'>
       <div className='header-brand'>
@@ -23,56 +26,21 @@ export default function Navbar() {
           <div className='nav-item text-center'>
             <Link className='u u-LR' to='/assignments'>Assignments</Link>
           </div>
-          <div className='nav-item text-center'>
-            <Link className='u u-LR' to='/images'>Images</Link>
-          </div>
-          <div className='nav-item text-center'>
-            <Link className='u u-LR' to='/legend'>Legend</Link>
-          </div>
+          {isAuthenticated && (
+            <div className='nav-item text-center'>
+              <Link className='u u-LR' to='/admin/images'>Images</Link>
+            </div>
+          )}
         </div>
         <div className='nav-right'>
           <div className='nav-item text-center'>
-            <Link className='u u-LR' to='/admin/upload'>Upload Image</Link>
-            {/* <Link className='u u-LR' to='/logout'>Logout</Link> */}
+            {isAuthenticated
+              ? <a onClick={() => logout()}>Logout</a>
+              : <Link to='/login'>Login as Admin</Link>
+            }
           </div>
         </div>
       </div>
     </div>
   );
 }
-// export default function NavBar() {
-//   // const { url } = useRouteMatch();
-
-//   return (
-//     <div className='header header-fill unselectable header-animated header-dark'>
-//       <div className='header-brand'>
-//         {/* <Link className='nav-item no-hover u u-LR' to={`${url}`}> */}
-//         {/*   <h6 className='title'>PaintByNumbers</h6> */}
-//         {/* </Link> */}
-//         <div className='nav-item nav-btn' id='header-btn'>
-//           <span />
-//           <span />
-//           <span />
-//         </div>
-//       </div>
-//       <div className='header-nav' id='header-menu'>
-//         <div className='nav-left'>
-//           <div className='nav-item text-center'>
-//             {/* <Link className='u u-LR' to={`${url}/assignments`}>Assignments</Link> */}
-//           </div>
-//           <div className='nav-item text-center'>
-//             {/* <Link className='u u-LR' to={`${url}/images`}>Images</Link> */}
-//           </div>
-//           <div className='nav-item text-center'>
-//             {/* <Link className='u u-LR' to={`${url}/legend`}>Legend</Link> */}
-//           </div>
-//         </div>
-//         <div className='nav-right'>
-//           <div className='nav-item text-center'>
-//             <Link className='u u-LR' to='/logout'>Logout</Link>
-//           </div>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// }
