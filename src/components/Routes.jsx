@@ -5,7 +5,7 @@ import {
 } from 'react-router-dom';
 import Login from './Login';
 import Dashboard from '../views/Dashboard';
-import ImageRoutes from './ImageRoutes';
+import ImageRoutes from './images/ImageRoutes';
 import PrivateRoute from './PrivateRoute';
 
 export default function App() {

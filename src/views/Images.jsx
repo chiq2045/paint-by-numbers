@@ -5,7 +5,7 @@ import {
 } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth0 } from '../utils/react-auth0-spa';
-import imageExtensions from './images/imageExtensions';
+import imageExtensions from '../components/images/imageExtensions';
 
 export default function Images() {
   const [images, setImages] = useState([]);
