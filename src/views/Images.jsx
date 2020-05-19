@@ -1,50 +1,14 @@
-import React, { useState, useEffect } from 'react';
+/* eslint-disable react/prop-types */
+import React from 'react';
 import {
   Link,
   useRouteMatch
 } from 'react-router-dom';
-import axios from 'axios';
-import { useAuth0 } from '../utils/react-auth0-spa';
-import imageExtensions from '../components/images/imageExtensions';
 
-export default function Images() {
-  const [images, setImages] = useState([]);
-  const [loaded, setLoaded] = useState(false);
-  const [error, setError] = useState(null);
-  const { path } = useRouteMatch();
-  const { getTokenSilently } = useAuth0();
+export default function Images(props) {
+  const { images, loaded } = props;
+  const { path: routePath } = useRouteMatch();
 
-  const fetchImages = async() => {
-    try {
-      const token = await getTokenSilently();
-      const instance = axios.create({
-        baseURL: 'https://api.ogamba.com/paint/private',
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Access-Control-Allow-Origin': 'https://api.ogamba.com'
-        }
-      });
-      const result = await instance('/svgs');
-      setImages(result.data);
-      setLoaded(true);
-    } catch (error) {
-      setError(error);
-    }
-  };
-
-  useEffect(() => {
-    fetchImages();
-    if (error) console.error(error);
-    // eslint-disable-next-line
-  }, []);
-
-  const stripName = name => {
-    let returnName = name;
-    imageExtensions.forEach(extension => {
-      returnName = returnName.replace(extension, '');
-    });
-    return returnName;
-  }
   const renderSvg = (svgName, svgPaths) => {
     const paths = [];
     // eslint-disable-next-line
@@ -73,7 +37,7 @@ export default function Images() {
    * )
    */
   const renderCard = svgData => {
-    const svgName = stripName(svgData.name);
+    const svgName = svgData.name;
     const svg = JSON.parse(svgData.value);
     const id = svgData.id;
     const { width, height } = svg[0];
@@ -95,10 +59,10 @@ export default function Images() {
         </div>
         <div className='action-bar u-center'>
           <div className='btn-group'>
-            <Link to={`${path}edit/${id}`}>
+            <Link to={`${routePath}/edit/${id}`}>
               <button className='btn-clear'>Edit</button>
             </Link>
-            <Link to={`${path}delete/${id}`}>
+            <Link to={`${routePath}/delete/${id}`}>
               <button className='btn-clear'>Delete</button>
             </Link>
           </div>
@@ -146,15 +110,16 @@ export default function Images() {
       <div className='content'>
         <div className='row u-text-center'>
           <div className='col-6'>
-            <Link to={`${path}upload`}>Upload Image</Link>
+            <Link to={`${routePath}/upload`}>Upload Image</Link>
           </div>
           <div className='col-6'>
-            <Link to={`${path}delete`}>Delete All</Link>
+            <Link to={`${routePath}/delete/all`}>Delete All</Link>
           </div>
         </div>
       </div>
       <div className='content'>
         {loaded && <RenderAllCards />}
+        {!loaded && <div className='loader'>Loading...</div>}
       </div>
     </div>
   );
