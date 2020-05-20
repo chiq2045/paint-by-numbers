@@ -1,41 +1,65 @@
-import React, { useState, useEffect } from 'react';
+/* eslint-disable react/prop-types */
+import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 
-export default function EditImage() {
-  const [image, setImage] = useState([]);
-  const [loaded, setLoaded] = useState(false);
-  const [error, setError] = useState(null);
+export default function EditImage(props) {
+  const { images, loaded } = props;
+  // const [svg, setSvg] = useState([]);
+  // const [found, setFound] = useState(false);
   const { id } = useParams();
-  const { getTokenSilently } = useAuth0();
 
-  const fetchImage = async() => {
-    try {
-      const token = await getTokenSilently();
-      const instance = axios.create({
-        baseURL: 'https:// api.ogamba.com/paint/private',
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Access-Control-Allow-Origin': 'https://api.ogamba.com'
-        }
-      });
-      const result = await instance(`/svgs/${id}`);
-      console.log(result);
-      setImage(result.data);
-      setLoaded(true);
-    } catch (error) {
-      setError(error);
-    }
-  };
+  // const findImage = () => {
+  //   const foundImage = images.find(image => {
+  //     image.id == parseInt(id);
+  //   });
+  //   if (foundImage) {
+  //     setFound(true);
+  //     setSvg(foundImage);
+  //   };
+  // }
+  const handleChangeColor = pathId => {
+    document.getElementById(pathId).setAttribute('fill', 'black');
+  }
 
-  useEffect(() => {
-    fetchImage();
-    if (error) console.error(error);
+  const RenderSvg = () => {
+    const svg = images[parseInt(id-1)];
+    const svgData = JSON.parse(svg.value);
+    const { height, width } = svgData[0];
+    const svgPaths = svgData.slice(1);
+    const paths = [];
     // eslint-disable-next-line
-  }, []);
+    svgPaths.forEach(path => {
+      paths.push(<path 
+        key={`path-${path.id}`}
+        id={path.id}
+        d={path.d}
+        fill={path.fill}
+        stroke={path.stroke}
+        fillRule={path.fillRule}
+        // onClick={handleChangeColor(path.id)}
+      />,)
+    });
+    return (
+      <svg
+        viewBox={`0 0 ${width} ${height}`}
+        preserveAspectRatio='xMidYMin meet'
+        height='100%'
+      >
+        {paths}
+      </svg>
+    );
+  };
 
   return (
     <div className='content'>
-      {loaded && <h6>{image.name}</h6>}
+      {
+        loaded
+          ? (
+            <object>
+              <RenderSvg />
+            </object>
+          ) : <div className='loader'>Loading...</div>
+      }
     </div>
   );
 }
