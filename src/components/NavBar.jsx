@@ -21,26 +21,37 @@ export default function Navbar() {
           <span />
         </div>
       </div>
-      <div className='header-nav' id='header-menu'>
-        <div className='nav-left'>
-          <div className='nav-item text-center'>
-            <Link className='u u-LR' to='/assignments'>Assignments</Link>
-          </div>
-          {isAuthenticated && (
-            <div className='nav-item text-center'>
-              <Link className='u u-LR' to='/admin/images'>Images</Link>
+      {!isAuthenticated
+        ? (
+          <div className='header-nav' id='header-menu'>
+            <div className='nav-left'>
+              <div className='nav-item text-center'>
+                <Link className='u u-LR' to='/assignments'>View Assignments</Link>
+              </div>
             </div>
-          )}
-        </div>
-        <div className='nav-right'>
-          <div className='nav-item text-center'>
-            {isAuthenticated
-              ? <a onClick={() => logout()}>Logout</a>
-              : <Link to='/login'>Login as Admin</Link>
-            }
+            <div className='nav-right'>
+              <div className='nav-item text-center'>
+                <Link className='u u-RL' to='/login'>Login as Admin</Link>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
+        ) : (
+          <div className='header-nav' id='header-menu'>
+            <div className='nav-left'>
+              <div className='nav-item text-center'>
+                <Link className='u u-LR' to='/admin/assignments'>Manage Assignments</Link>
+              </div>
+              <div className='nav-item text-center'>
+                <Link className='u u-LR' to='/admin/images'>Manage Images</Link>
+              </div>
+            </div>
+            <div className='nav-right'>
+              <div className='nav-item text-center'>
+                <a className='u u-LR' onClick={() => logout()}>Logout</a>
+              </div>
+            </div>
+          </div>
+        )}
     </div>
   );
 }

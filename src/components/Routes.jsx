@@ -7,6 +7,8 @@ import Login from './Login';
 import Dashboard from '../views/Dashboard';
 import ImageRoutes from './images/ImageRoutes';
 import PrivateRoute from './PrivateRoute';
+import AdminAssignmentRoutes from './assignments/AdminAssignmentRoutes';
+import AssignmentRoutes from './assignments/AssignmentRoutes';
 
 export default function App() {
   return (
@@ -19,6 +21,8 @@ export default function App() {
         />
         <PrivateRoute path='/admin/images' component={ImageRoutes} />
         <Route path='/login' component={Login} />
+        <Route path='/assignments' component={AssignmentRoutes} />
+        <PrivateRoute path='/admin/assignments' component={AdminAssignmentRoutes} />
       </Switch>
     </div>
   );
