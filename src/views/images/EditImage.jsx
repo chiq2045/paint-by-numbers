@@ -1,24 +1,22 @@
 /* eslint-disable react/prop-types */
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import CirclePicker from './ColorPicker';
+import { CirclePicker } from 'react-color';
 import axios from 'axios';
 import { useAuth0 } from '../../utils/react-auth0-spa';
+import ColorPicker from './ColorPicker';
+import colors from '../../components/general/colors';
 
 export default function EditImage(props) {
   const { images, loaded } = props;
-  const [color, setColor] = useState({ color: 'black', pathId: 0});
-  const [changeColor, setChangeColor] = useState(false);
-  // const [borders, setBorders] = useState(false);
-  // const [currentFill, setCurrentFill] = useState('');
-  // const [svgPaths, setSvgPaths] = useState([]);
+  const [fillColor, setFillColor] = useState('');
   const { getTokenSilently } = useAuth0();
   const [readyToRender, setReadyToRender] = useState(false);
   const [svg, setSvg] = useState({});
   const [svgData, setSvgData] = useState({ config: {}, paths: [] });
   const [strokeDasharray, setStrokeDasharray] = useState([]);
-  // const [found, setFound] = useState(false);
   const { id } = useParams();
+  let color = '#000000';
 
   useEffect(() => {
     if (loaded)
@@ -50,7 +48,7 @@ export default function EditImage(props) {
 
   const handleChangePathFill = pathId => {
     const { paths, config } = svgData;
-    paths[pathId-1].fill = color.color;
+    paths[pathId-1].fill = fillColor;
     setSvgData({ paths: paths, config: config });
   };
 
@@ -101,7 +99,7 @@ export default function EditImage(props) {
   };
 
   const handleClearChanges = () => {
-    setSvgPaths(JSON.parse(images[parseInt(id-1)].value.slice(1)));
+    setSvgData({ config: svg.value[0], paths: svg.value.slice(1) });
   };
 
   const handleSaveChanges = async() => {
@@ -135,10 +133,29 @@ export default function EditImage(props) {
       });
   };
 
-  const handleColorPickerChange = (color, e) => {
-    setColor(color);
-    setChangeColor(true);
+  const handleColorPickerChange = (e) => {
+    color = e.target.key;
+    console.log(color);
   }
+  const RenderColorPicker = () => {
+    const returnPicker = [];
+    for (let i=0; i< Math.ceil(colors.length/3); i ++){
+      returnPicker.push(
+              <div className='row'>
+                <div className='col-4'>
+                  <button className='btn' style={{backgroundColor: colors[i*3+0]}} onClick={() => setFillColor(colors[i*3+0])} />
+                </div>
+                <div className='col-4'>
+                  <button className='btn' style={{backgroundColor: colors[i*3+1]}} onClick={() => setFillColor(colors[i*3+1])} />
+                </div>
+                <div className='col-4'>
+                  <button className='btn' style={{backgroundColor: colors[i*3+2]}} onClick={() => setFillColor(colors[i*3+2])} />
+                </div>
+              </div>,
+      );
+    }
+    return returnPicker;
+  };
 
   return (
     <div>
@@ -147,9 +164,9 @@ export default function EditImage(props) {
           <div className='col-4'>
             <button
               className='btn-light'
-              onClick={() => {loadImage}}
+              onClick={() => {handleClearChanges}}
             >
-              Load Image
+              Clear Changes
             </button>
           </div>
           <div className='col-4'>
@@ -169,7 +186,7 @@ export default function EditImage(props) {
         <div className='row'>
           <div className='col-3'>
             <div className='section'>
-              <CirclePicker />
+              <RenderColorPicker />
             </div>
           </div>
           <div className='col-9'>
