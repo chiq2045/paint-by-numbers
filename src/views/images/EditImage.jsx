@@ -77,42 +77,79 @@ export default function EditImage(props) {
       baseURL: 'https://api.ogamba.com/paint/private',
       headers: {
         Authorization: `Bearer ${token}`,
-        'Access-Control-Allow-Origin': 'https://api.ogamba.com'
+        'Access-Control-Allow-Origin': 'https://api.ogamba.com',
+        'Access-Control-Allow-Methods': 'PUT',
+        Credentials: true
       }
     });
-    const svg = images[id-1];
-    const config = svg.value[0];
-    const data = [];
-    data.push(config);
-    svgPaths.forEach(path => {
-      data.push(path);
+    const updateData = svg;
+    const svgArray = [];
+    svgArray.push(svgData.config);
+    svgData.paths.forEach(path => {
+      svgArray.push(path);
     });
-    await instance.put(`/update/${id}`, data);
+    updateData.value = svgArray;
+    await instance({
+      method: 'put',
+      url: `/svgs/update/${id}`,
+      data: updateData
+    })
+      .then(result => {
+        console.log(result);
+      })
+      .catch(error => {
+        console.log(error);
+      });
   };
+
+  const handleColorPickerChange = (color, e) => {
+    setColor(color);
+    setChangeColor(true);
+  }
+
   return (
     <div>
       <div className='content'>
         <div className='row'>
           <div className='col-4'>
-            <button className='btn-light' onClick={() => handleClearChanges}>Clear Changes</button>
+            <button
+              className='btn-light'
+              onClick={() => {loadImage}}
+            >
+              Load Image
+            </button>
           </div>
           <div className='col-4'>
-            <button className='btn-light' onClick={() => handleSaveChanges}>Save Changes</button>
+            <button
+              className='btn-light'
+              onClick={handleSaveChanges}
+            >
+              Save Changes
+            </button>
           </div>
           <div className='col-4'>
-            <button className='btn-light'>Add to Assignment</button>
+            <button className='btn-light'>Download</button>
           </div>
         </div>
       </div>
       <div className='content'>
-        {
-          loaded
-            ? (
-              <object>
-                <RenderSvg />
-              </object>
-            ) : <div className='loader'>Loading...</div>
-        }
+        <div className='row'>
+          <div className='col-3'>
+            <div className='section'>
+              <CirclePicker />
+            </div>
+          </div>
+          <div className='col-9'>
+            {
+              readyToRender
+                ? (
+                  <object>
+                    <RenderSvg />
+                  </object>
+                ) : <div className='loader'>Loading...</div>
+            }
+          </div>
+        </div>
       </div>
     </div>
   );
