@@ -38,7 +38,7 @@ export default function Images(props) {
    */
   const renderCard = svgData => {
     const svgName = svgData.name;
-    const svg = JSON.parse(svgData.value);
+    const svg = svgData.value;
     const id = svgData.id;
     const { width, height } = svg[0];
     const svgPaths = svg.slice(1);
