@@ -32,7 +32,9 @@ export default function UploadImage() {
           'Access-Control-Allow-Origin': 'https://api.ogamba.com'
         }
       });
+      console.log('created stuff');
       const response = await instance.post('/upload/single', data);
+      console.log('sent for data');
       console.log(response.data);
       setUploaded(true);
     } catch (error) {
@@ -59,36 +61,36 @@ export default function UploadImage() {
     }
   };
 
-  // const RenderUploadPrompt = () => {
-  //   return (
-  //     <div className='content'>
-  //       <div className='dropzone' {...getRootProps()}>
-  //         <input className='col-9' {...getInputProps()} />
-  //         {
-  //           isDragActive
-  //             ? <p>Drop the file here...</p>
-  //             : <p>Drag n&apos; Drop a file here, or click here to select file</p>
-  //         }
-  //       </div>
-  //       <div className='btn-group'>
-  //         <button className='btn btn-primary animated' onClick={handleUpload}>Upload</button>
-  //         <button className='btn btn-dark animated' onClick={resetUpload}>Reset File</button>
-  //       </div>
-  //       {fileData()}
-  //     </div>
-  //   );
-  // };
+  const RenderUploadPrompt = () => {
+    return (
+      <div className='content'>
+        <div className='dropzone' {...getRootProps()}>
+          <input className='col-9' {...getInputProps()} />
+          {
+            isDragActive
+              ? <p>Drop the file here...</p>
+              : <p>Drag n&apos; Drop a file here, or click here to select file</p>
+          }
+        </div>
+        <div className='btn-group'>
+          <button className='btn btn-primary animated' onClick={handleUpload}>Upload</button>
+          <button className='btn btn-dark animated' onClick={resetUpload}>Reset File</button>
+        </div>
+        {fileData()}
+      </div>
+    );
+  };
 
-  // const CompleteUploadPrompt = () => {
-  //   return (
-  //     <div className='content'>
-  //       <div className='btn-group'>
-  //         <button className='btn-dark' onClick={resetUpload}>Upload Another</button>
-  //         <button className='btn-dark'>Done Uploading</button>
-  //       </div>
-  //     </div>
-  //   );
-  // };
+  const CompleteUploadPrompt = () => {
+    return (
+      <div className='content'>
+        <div className='btn-group'>
+          <button className='btn-dark' onClick={resetUpload}>Upload Another</button>
+          <button className='btn-dark'>Done Uploading</button>
+        </div>
+      </div>
+    );
+  };
 
   return (
     <div>
@@ -123,10 +125,15 @@ export default function UploadImage() {
             }
           </div>
           <div className='btn-group'>
-            <button className='btn btn-primary animated' onClick={handleUpload}>Upload</button>
-            <button className='btn btn-dark animated' onClick={resetUpload}>Reset File</button>
+            <button className='btn btn-primary animated' onClick={() => handleUpload()}>Upload</button>
+            <button className='btn btn-dark animated' onClick={() => resetUpload()}>Reset File</button>
           </div>
           {fileData()}
+        </div>
+      )}
+      {uploaded && (
+        <div>
+          <p>Success</p>
         </div>
       )}
     </div>
