@@ -1,22 +1,21 @@
 /* eslint-disable react/prop-types */
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { CirclePicker } from 'react-color';
 import axios from 'axios';
-import { useAuth0 } from '../../utils/react-auth0-spa';
-import ColorPicker from './ColorPicker';
+import axiosConfig from '../../utils/axiosConfig';
+import ColorPicker from '../../components/images/ColorPicker';
 import colors from '../../components/general/colors';
+import { useAuth0 } from '../../utils/react-auth0-spa';
 
 export default function EditImage(props) {
   const { images, loaded } = props;
   const [fillColor, setFillColor] = useState('');
-  const { getTokenSilently } = useAuth0();
   const [readyToRender, setReadyToRender] = useState(false);
   const [svg, setSvg] = useState({});
   const [svgData, setSvgData] = useState({ config: {}, paths: [] });
   const [strokeDasharray, setStrokeDasharray] = useState([]);
   const { id } = useParams();
-  let color = '#000000';
+  const { getTokenSilently } = useAuth0();
 
   useEffect(() => {
     if (loaded)
@@ -32,19 +31,6 @@ export default function EditImage(props) {
       setReadyToRender(true);
     }
   }, [svg]);
-
-  // useEffect(() => {
-  //   if (svgData.paths.length > 0) {
-  //     // const pathsArray = svgData.paths;
-  //     // pathsArray.forEach(path => {
-  //     //   setStrokeDasharray(strokeDasharray => [...strokeDasharray, '']);
-  //     // });
-  //   }
-  // }, [svgData]);
-
-  // useEffect(() => {
-  //   setChangeColor(false);
-  // }, [changeColor]);
 
   const handleChangePathFill = pathId => {
     const { paths, config } = svgData;
@@ -147,16 +133,13 @@ export default function EditImage(props) {
               Save Changes
             </button>
           </div>
-          <div className='col-4'>
-            <button className='btn-light'>Download</button>
-          </div>
         </div>
       </div>
       <div className='content'>
         <div className='row'>
           <div className='col-3'>
             <div className='section'>
-              <RenderColorPicker />
+              <ColorPicker colors={colors} setFillColor={setFillColor} />
             </div>
           </div>
           <div className='col-9'>
