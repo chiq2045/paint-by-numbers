@@ -10,6 +10,7 @@ import Images from '../../views/Images';
 import UploadImage from '../../views/images/UploadImage';
 import EditImage from '../../views/images/EditImage';
 import DeleteAll from '../../views/images/DeleteAll';
+import axiosConfig from '../../utils/axiosConfig';
 
 export default function ImageRoutes() {
   const [images, setImages] = useState([]);
@@ -28,13 +29,7 @@ export default function ImageRoutes() {
   const fetchImages = async() => {
     try {
       const token = await getTokenSilently();
-      const instance = axios.create({
-        baseURL: 'https://api.ogamba.com/paint/private',
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Access-Control-Allow-Origin': 'https://api.ogamba.com'
-        }
-      });
+      const instance = axios.create(axiosConfig(token, 'GET'));
       const result = await instance('/svgs');
       setImages(result.data);
       setLoaded(true);

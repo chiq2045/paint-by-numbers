@@ -23,24 +23,22 @@ export default function UploadImage() {
       files[0],
       files[0].name
     );
-    try {
-      const token = await getTokenSilently();
-      const instance = axios.create({
-        baseURL: 'https://api.ogamba.com/paint/private',
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Access-Control-Allow-Origin': 'https://api.ogamba.com'
-        }
+    const token = await getTokenSilently();
+    const instance = axios.create(axiosConfig(token, 'POST'));
+    await instance({
+      method: 'post',
+      url: '/upload/single',
+      data: data
+    })
+      .then(response => {
+        console.log(response.data);
+        console.log(response.status);
+        setUploaded(true);
+      })
+      .catch(error => {
+        console.log(error);
+        setUploaded(false);
       });
-      console.log('created stuff');
-      const response = await instance.post('/upload/single', data);
-      console.log('sent for data');
-      console.log(response.data);
-      setUploaded(true);
-    } catch (error) {
-      console.error(error);
-      setUploaded(false);
-    }
   };
 
   const resetUpload = () => {

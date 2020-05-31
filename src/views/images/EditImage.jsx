@@ -104,15 +104,7 @@ export default function EditImage(props) {
 
   const handleSaveChanges = async() => {
     const token = await getTokenSilently();
-    const instance = axios.create({
-      baseURL: 'https://api.ogamba.com/paint/private',
-      headers: {
-        Authorization: `Bearer ${token}`,
-        'Access-Control-Allow-Origin': 'https://api.ogamba.com',
-        'Access-Control-Allow-Methods': 'PUT',
-        Credentials: true
-      }
-    });
+    const instance = axios.create(axiosConfig(token, 'PUT'));
     const updateData = svg;
     const svgArray = [];
     svgArray.push(svgData.config);
@@ -123,38 +115,16 @@ export default function EditImage(props) {
     await instance({
       method: 'put',
       url: `/svgs/update/${id}`,
-      data: updateData
+      data: updateData,
+      responseType: 'json'
     })
-      .then(result => {
-        console.log(result);
+      .then(response => {
+        console.log(response.data);
+        console.log(response.status);
       })
       .catch(error => {
         console.log(error);
       });
-  };
-
-  const handleColorPickerChange = (e) => {
-    color = e.target.key;
-    console.log(color);
-  }
-  const RenderColorPicker = () => {
-    const returnPicker = [];
-    for (let i=0; i< Math.ceil(colors.length/3); i ++){
-      returnPicker.push(
-              <div className='row'>
-                <div className='col-4'>
-                  <button className='btn' style={{backgroundColor: colors[i*3+0]}} onClick={() => setFillColor(colors[i*3+0])} />
-                </div>
-                <div className='col-4'>
-                  <button className='btn' style={{backgroundColor: colors[i*3+1]}} onClick={() => setFillColor(colors[i*3+1])} />
-                </div>
-                <div className='col-4'>
-                  <button className='btn' style={{backgroundColor: colors[i*3+2]}} onClick={() => setFillColor(colors[i*3+2])} />
-                </div>
-              </div>,
-      );
-    }
-    return returnPicker;
   };
 
   return (
