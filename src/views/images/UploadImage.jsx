@@ -3,6 +3,7 @@ import { Redirect } from 'react-router-dom';
 import { useDropzone } from 'react-dropzone';
 import axios from 'axios';
 import { useAuth0 } from '../../utils/react-auth0-spa';
+import axiosConfig from '../../utils/axiosConfig';
 
 export default function UploadImage() {
   const [files, setFiles] = useState([]);
@@ -52,7 +53,6 @@ export default function UploadImage() {
         <div>
           <h6>File Info</h6>
           <p>File Name: {files[0].name}</p>
-          <p>File Path: {files[0].path}</p>
           <p>File Type: {files[0].type}</p>
         </div>
       );
@@ -71,8 +71,8 @@ export default function UploadImage() {
           }
         </div>
         <div className='btn-group'>
-          <button className='btn btn-primary animated' onClick={handleUpload}>Upload</button>
-          <button className='btn btn-dark animated' onClick={resetUpload}>Reset File</button>
+          <button className='btn btn-primary animated' onClick={() => handleUpload}>Upload</button>
+          <button className='btn btn-dark animated' onClick={() => resetUpload}>Reset File</button>
         </div>
         {fileData()}
       </div>
@@ -83,7 +83,7 @@ export default function UploadImage() {
     return (
       <div className='content'>
         <div className='btn-group'>
-          <button className='btn-dark' onClick={resetUpload}>Upload Another</button>
+          <button className='btn-dark' onClick={() => resetUpload}>Upload Another</button>
           <button className='btn-dark'>Done Uploading</button>
         </div>
       </div>
@@ -104,36 +104,7 @@ export default function UploadImage() {
           <li>svg</li>
         </ul>
       </div>
-      {uploaded && (
-        <div className='content'>
-          <div className='btn-group'>
-            <button className='btn-dark' onClick={resetUpload}>Upload Another</button>
-            <button className='btn-dark' onClick={() => <Redirect to='/admin/images' />}>Done Uploading</button>
-          </div>
-        </div>
-      )}
-      {!uploaded && (
-        <div className='content'>
-          <div className='dropzone' {...getRootProps()}>
-            <input className='col-9' {...getInputProps()} />
-            {
-              isDragActive
-                ? <p>Drop the file here...</p>
-                : <p>Drag n&apos; Drop a file here, or click here to select file</p>
-            }
-          </div>
-          <div className='btn-group'>
-            <button className='btn btn-primary animated' onClick={() => handleUpload()}>Upload</button>
-            <button className='btn btn-dark animated' onClick={() => resetUpload()}>Reset File</button>
-          </div>
-          {fileData()}
-        </div>
-      )}
-      {uploaded && (
-        <div>
-          <p>Success</p>
-        </div>
-      )}
+      {uploaded ? <CompleteUploadPrompt /> : <RenderUploadPrompt />}
     </div>
   );
 }
