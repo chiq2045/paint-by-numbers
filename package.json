@@ -6,7 +6,6 @@
   "scripts": {
     "start": "echo 'Building UI Files' && webpack && echo '\n\nStarting Server' node index.js",
     "build": "webpack",
-    "dev": "webpack-dev-server --color --progress",
     "watch": "webpack --color --progress --watch"
   },
   "author": "",
