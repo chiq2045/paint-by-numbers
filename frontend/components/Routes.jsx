@@ -9,6 +9,7 @@ import ImageRoutes from './images/ImageRoutes';
 import PrivateRoute from './PrivateRoute';
 import AdminAssignmentRoutes from './assignments/AdminAssignmentRoutes';
 import AssignmentRoutes from './assignments/AssignmentRoutes';
+import Legend from '../views/Legend';
 
 export default function App() {
   return (
@@ -23,6 +24,7 @@ export default function App() {
         <Route path='/login' component={Login} />
         <Route path='/assignments' component={AssignmentRoutes} />
         <PrivateRoute path='/admin/assignments' component={AdminAssignmentRoutes} />
+        <PrivateRoute path='/admin/legend' component={Legend} />
       </Switch>
     </div>
   );

@@ -15,27 +15,30 @@ import axiosConfig from '../../utils/axiosConfig';
 export default function ImageRoutes() {
   const [images, setImages] = useState([]);
   const [loaded, setLoaded] = useState(false);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState([]);
 
   const { getTokenSilently } = useAuth0();
   const { path } = useRouteMatch();
 
   useEffect(() => {
-    fetchImages();
-    if (error) console.error(error);
-    // eslint-disable-next-line
-  }, []);
+    !loaded && fetchImages();
+    if (Array.isArray(error) && error.length > 0)
+      console.error(error);
+  }, [loaded, error]);
 
   const fetchImages = async() => {
-    try {
-      const token = await getTokenSilently();
-      const instance = axios.create(axiosConfig(token, 'GET'));
-      const result = await instance('/svgs');
-      setImages(result.data);
-      setLoaded(true);
-    } catch (error) {
-      setError(error);
-    }
+    const token = await getTokenSilently();
+    const instance = axios.create(axiosConfig(token, 'GET'));
+    await instance({
+      method: 'get',
+      url: '/svgs'
+    })
+      .then(response => {
+        const { data } = response;
+        data.success ? setImages(data.results) : setError(error => [...error, data.error]);
+        setLoaded(data.success);
+      })
+      .catch(error => setError(error));
   };
 
   return (
@@ -46,7 +49,7 @@ export default function ImageRoutes() {
         </Route>
         <Route path={`${path}/upload`} component={UploadImage} />
         <Route path={`${path}/edit/:id`}>
-          <EditImage images={images} loaded={loaded} />
+          <EditImage images={images} loaded={loaded} setLoaded={setLoaded} />
         </Route>
         <Route path={`${path}/delete/all`}>
           <DeleteAll path={path} />

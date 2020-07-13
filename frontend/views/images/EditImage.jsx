@@ -8,7 +8,7 @@ import colors from '../../components/general/colors';
 import { useAuth0 } from '../../utils/react-auth0-spa';
 
 export default function EditImage(props) {
-  const { images, loaded } = props;
+  const { images, loaded, setLoaded } = props;
   const [fillColor, setFillColor] = useState('');
   const [readyToRender, setReadyToRender] = useState(false);
   const [svg, setSvg] = useState({});
@@ -20,6 +20,8 @@ export default function EditImage(props) {
   useEffect(() => {
     if (loaded)
       setSvg(images[parseInt(id-1)]);
+    else
+      setReadyToRender(false);
   }, [loaded]);
 
   useEffect(() => {
@@ -110,7 +112,8 @@ export default function EditImage(props) {
       })
       .catch(error => {
         console.log(error);
-      });
+      })
+      .finally(() => setLoaded(false));
   };
 
   return (
