@@ -8,7 +8,7 @@ import RenderSvg from './RenderSvg';
  * @param {string} routePath - the current path (necessary for routing)
  */
 export default function RenderCard(props) {
-  const { svg, path, addToAssignment } = props;
+  const { svg, path, setImageId } = props;
   const { name, id } = svg;
   const color = 'black';
 
@@ -25,9 +25,9 @@ export default function RenderCard(props) {
           ? (
             <div className='btn-group'>
               <Link to={`${path}/edit/${id}`}>
-                <button className='btn-clear'>Edit</button>
+                <button className='btn-clear' onClick={() => setImageId(id)}>Edit</button>
               </Link>
-              <Link to={`${path}/delete/${id}`}>
+              <Link to={`${path}/delete/${id}`} onClick={() => setImageId(id)}>
                 <button className='btn-clear'>Delete</button>
               </Link>
             </div>

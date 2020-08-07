@@ -8,31 +8,46 @@ import colors from '../../components/general/colors';
 import { useAuth0 } from '../../utils/react-auth0-spa';
 
 export default function EditImage(props) {
-  const { images, loaded, setLoaded } = props;
+  const { imageId } = props;
   const [fillColor, setFillColor] = useState('');
   const [readyToRender, setReadyToRender] = useState(false);
-  const [svg, setSvg] = useState({});
+  const [svg, setSvg] = useState();
   const [svgData, setSvgData] = useState({ config: {}, paths: [] });
   const [strokeDasharray, setStrokeDasharray] = useState([]);
+  const [loaded, setLoaded] = useState(false);
   const { id } = useParams();
   const { getTokenSilently } = useAuth0();
 
   useEffect(() => {
-    if (loaded)
-      setSvg(images[parseInt(id-1)]);
-    else
-      setReadyToRender(false);
+    !loaded && fetchImage(imageId);
   }, [loaded]);
 
   useEffect(() => {
-    if (svg.value) {
+    if (loaded) {
       setSvgData({
         config: svg.value[0],
         paths: svg.value.slice(1)
       });
       setReadyToRender(true);
     }
-  }, [svg]);
+  }, [loaded]);
+
+  const fetchImage = async imageId => {
+    const token = await getTokenSilently();
+    const instance = axios.create(axiosConfig(token, 'GET'));
+    await instance({
+      method: 'get',
+      url: `svgs/${imageId || id}`
+    })
+      .then(response => {
+        const { data } = response;
+        setSvg(data.results[0]);
+        setLoaded(data.success);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }
 
   const handleChangePathFill = pathId => {
     const { paths, config } = svgData;
