@@ -44,6 +44,9 @@ export default function Navbar() {
               <div className='nav-item text-center'>
                 <Link className='u u-LR' to='/admin/images'>Manage Images</Link>
               </div>
+              <div className='nav-item text-center'>
+                <Link className='u u-LR' to='/admin/legend'>Legend</Link>
+              </div>
             </div>
             <div className='nav-right'>
               <div className='nav-item text-center'>

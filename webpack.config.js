@@ -5,7 +5,7 @@ const { resolve } = require('path');
 const env = 'development';
 module.exports = {
   mode: env,
-  entry: resolve(__dirname, 'src/index'),
+  entry: resolve(__dirname, 'frontend/index'),
   output: {
     path: resolve(__dirname, 'dist'),
     publicPath: '/'
@@ -52,7 +52,7 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: resolve(__dirname, 'src/index.html')
+      template: resolve(__dirname, 'frontend/index.html')
     }),
     new MiniCssExtractPlugin()
   ],
