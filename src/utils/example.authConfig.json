@@ -1,0 +1,5 @@
+{
+  "domain": "AUTH0.DOMAIN",
+  "clientId": "AUTH0.CLIENT_ID",
+  "audience": "AUTH0.AUDIENCE"
+}

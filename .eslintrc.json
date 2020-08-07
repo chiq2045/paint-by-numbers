@@ -1,20 +1,31 @@
 {
     "env": {
-        "commonjs": true,
-        "es6": true,
-        "node": true
+        "browser": true,
+        "es6": true
     },
     "extends": [
-        "koa"
+        "plugin:react/recommended",
+        "airbnb"
     ],
     "globals": {
         "Atomics": "readonly",
         "SharedArrayBuffer": "readonly"
     },
     "parserOptions": {
-        "ecmaVersion": 2018
+        "ecmaFeatures": {
+            "jsx": true
+        },
+        "ecmaVersion": 2018,
+        "sourceType": "module"
     },
+    "plugins": [
+        "react",
+        "react-hooks"
+    ],
     "rules": {
-        "indent": ["error", 2]
+        "indent": ["error", 2],
+        "react-hooks/rules-of-hooks": "error",
+        "react-hooks/exhaustive-deps": "warn",
+        "react/prop-types": 0
     }
 }

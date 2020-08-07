@@ -10,10 +10,12 @@ module.exports = {
     path: resolve(__dirname, 'dist'),
     publicPath: '/'
   },
+  devtool: 'eval-source-map',
   devServer: {
     contentBase: resolve(__dirname, 'dist'),
     compress: true,
-    port: 9000
+    port: 9000,
+    historyApiFallback: true
   },
   module: {
     rules: [
